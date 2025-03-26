@@ -1,15 +1,16 @@
 <?php
-// date_default_timezone_set
-// database connection settings
-$servername = "localhost";  // change if needed
-$username = "root";         // db username
-$password = "";             // db password
-$dbname = "319_db";         // db name
+date_default_timezone_set('America/Chicago');
+// Database connection settings
+$servername = "localhost";  // Change if needed
+$username = "root";         // Your database username
+$password = "";             // Your database password
+$dbname = "01garcia db";  // Your database name
+// Create a connection using MySQLi Object-Oriented approach
+$mysqli = new mysqli($servername, $username, $password, $dbname);
 
-// create a connection using MySqli Object oriented approach
-$mysqli = new mysqli(hostname: $servername, username:)
-
-//check connection
+// Check connection
 if ($mysqli->connect_error) {
-    die("connection failed: " . $mysqli->connect_error);
+    die("Connection failed: " . $mysqli->connect_error);
 }
+
+?>
