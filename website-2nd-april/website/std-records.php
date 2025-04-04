@@ -1,4 +1,11 @@
 
+<?php
+include "config.php";
+   if(!isset($_SESSION['iduser'])){
+    header("Location: login.php");
+    exit();
+   }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,36 +39,27 @@
         }
         .edit {
             background-color: #4CAF50;
+            text-decoration: none;
         }
         .delete {
             background-color: #f44336;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
+   
     <?php
-    include "config.php";
+     include "config.php";
+     
+     if($_GET['did']){
+     $qDelete = "delete from student where id = ".$_GET['did']." ";
+     $mysqli->query($qDelete);
+    }
     ?>
-    <?php
-
-// // SQL query to fetch all records
-// $sql = "SELECT * FROM student";
-// $result = $mysqli->query($sql);
-
-// // Check if records exist
-// if ($result->num_rows > 0) {
-//     // Fetch and display records
-//     while ($row = $result->fetch_assoc()) {
-//         echo "ID: " . $row["id"] . " - Name: " . $row["name"] . " - Email: " . $row["email"] . "<br>";
-//     }
-// } else {
-//     echo "No records found.";
-// }
-    ?>
-<div class="nav">
-        <a href="index.php">Home</a>
-        <a href="records.html">Pages</a>
-    </div>
+<?php
+include "nav.php";
+?>
 
     <div class="container">
         <h2>Database Records</h2>
@@ -70,32 +68,35 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Country</th>
+                   
+                    <th>Age</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+             <?php
+             $query = "select * from student";
+             $sql = $mysqli->query($query);
+
+            while($row = $sql->fetch_assoc()){?>
                 <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>john@example.com</td>
-                    <td>USA</td>
+                    <td><?php echo $row['id'];?></td>
+                    <td><?php echo $row['name'];?></td>
+                    <td><?php echo $row['age'];?></td>
+                  
                     <td>
-                        <button class="btn edit">Edit</button>
-                        <button class="btn delete">Delete</button>
+                        <a class="btn edit" href="std-registration-edit.php?eid=<?php echo $row['id'];?>">Edit</a>
+                        <a class="btn delete" onclick="return confirm('Are you sure you want to delete this item?');" href="std-records.php?did=<?php echo $row['id'];?>">Delete</a>
                     </td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>jane@example.com</td>
-                    <td>Canada</td>
-                    <td>
-                        <button class="btn edit">Edit</button>
-                        <button class="btn delete">Delete</button>
-                    </td>
-                </tr>
+
+           <?php  }
+             ?>
+               
+
+             
+
+                
             </tbody>
         </table>
     </div>

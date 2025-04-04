@@ -1,3 +1,12 @@
+
+<?php
+include "config.php";
+   if(!isset($_SESSION['iduser'])){
+    header("Location: login.php");
+    exit();
+   }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,55 +36,42 @@
         return true;
     }
 </script>
-
 <?php
-date_default_timezone_set('America/Chicago');
-// Database connection settings
-$servername = "localhost";  // Change if needed
-$username = "root";         // Your database username
-$password = "";             // Your database password
-$dbname = "319_db";  // Your database name
 
-// Create a connection using MySQLi Object-Oriented approach
-$mysqli = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
 
-// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $name = $mysqli->real_escape_string($_POST['name']);
-    $email = $mysqli->real_escape_string($_POST['email']);
-    $country = $mysqli->real_escape_string($_POST['country']);
-    $major = $mysqli->real_escape_string($_POST['major']);
-    $age = date('Y-m-d', $_POST['age']);
-    $date_added = date('Y-m-d H:i:s');
-    // Insert query using mysqli_query
-       // Insert query using $mysqli->query()
-       echo $sql = "INSERT INTO student (name, email, age, country, major, date_added) VALUES ('$name', '$email', '$age', '$country','$major','$date_added')";
+       $name = $_POST['name'];
+       $email = $_POST['email'];
+       $age = date('Y-m-d',$_POST['age']);
+       $country = $_POST['country'];
+       $major = $_POST['major'];
+       $date_added = date('Y-m-d H:i:s');
 
-       if ($mysqli->query($sql) === TRUE) {
-           echo "Registration successful!";
-       } else {
-           echo "Error: " . $mysqli->error;
-       }
-   
-       // Close connection
-       $mysqli->close();
+      $sql = "insert into student 
+    
+        (name, email, age, country, major, date_added, who_added) 
+        values ('$name', '$email', '$age','$country', '$major', '$date_added', '".$_SESSION['iduser']."')";
+
+        if ($mysqli->query($sql) === TRUE) {
+            echo "Records successful!";
+        } else {
+            echo "Error: " . $mysqli->error;
+        }
+
 }
+
 ?>
+
 </head>
 <body>
-    <div class="nav">
-        <a href="index.php">Home</a>
-        <a href="records.html">Pages</a>
-    </div>
+<?php
+include "nav.php";
+?>
 
     <div class="container">
-        <h2>Registration Form</h2>
+        <h2>Students Registration Form</h2>
         <form method="post" action="" id="registrationForm" onsubmit="return validateForm()">
             <label for="name">Name:</label>
             <input class="input" type="text" id="name" name="name" >
@@ -90,17 +86,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="country">Country:</label>
             <select id="country" name="country" class="select">
                 <option value="">Please Select</option>
-                <option value="1">USA</option>
-                <option value="2">Mexico</option>
-                <option value="3">Brazil</option>
+                <option value="usa">USA</option>
+                <option value="mexico">Mexico</option>
+                <option value="brazil">Brazil</option>
             </select><br>
 
             <label for="country">Major:</label>
             <select id="major" name="major" class="select">
                 <option value="">Please Select</option>
-                <option value="1">CS</option>
-                <option value="2">Bussiness</option>
-                <option value="3">Law</option>
+                <option value="cs">CS</option>
+                <option value="bussiness">Bussiness</option>
+                <option value="law">Law</option>
             </select><br>
             
             <input class="signup" type="submit" value="Signup" name="submit">
