@@ -10,29 +10,31 @@
 include "config.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-       $name = $_POST['name'];
-       $email = $_POST['email'];
-       $password = md5($_POST['password']);
-       $date_added = date('Y-m-d H:i:s');
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    $date_added = date('Y-m-d H:i:s');
 
-      
-        $sql = "insert into signup 
-    
-        (name, email, password, date_added) 
-        values ('$name', '$email', '$password', '$date_added')";
+    // Check if email already exists
+    $checkEmailSql = "SELECT * FROM signup WHERE email = '$email'";
+    $result = $mysqli->query($checkEmailSql);
+
+    if ($result->num_rows > 0) {
+        echo "<script>alert('Email already exists. Please use a different email.');</script>";
+    } else {
+        // Proceed to insert the new record
+        $sql = "INSERT INTO signup (name, email, password, date_added) 
+                VALUES ('$name', '$email', '$password', '$date_added')";
 
         if ($mysqli->query($sql) === TRUE) {
-            echo "Records successful!";
+            echo "<script>alert('Signup successful!');</script>";
         } else {
             echo "Error: " . $mysqli->error;
         }
-       
-
-    
-
+    }
 }
-
 ?>
+
 
 </head>
 <body>

@@ -4,7 +4,7 @@
 $servername = "localhost";  // Change if needed
 $username = "root";         // Your database username
 $password = "";             // Your database password
-$dbname = "319_db_login";  // Your database name
+$dbname = "dbasephp";  // Your database name
 // Create a connection using MySQLi Object-Oriented approach
 $mysqli = new mysqli($servername, $username, $password, $dbname);
 
